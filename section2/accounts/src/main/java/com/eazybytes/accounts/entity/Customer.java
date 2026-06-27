@@ -36,7 +36,7 @@ public class Customer extends BaseEntity {
     @Column(name = "mobile_number")
     private String mobileNumber;
 
-    public CustomerDto toDto() {
-        return new CustomerDto(name, email, mobileNumber);
+    public static CustomerDto parseToDto(Customer customer, Account account) {
+        return new CustomerDto(customer.name, customer.email, customer.mobileNumber, account.toDto());
     }
 }

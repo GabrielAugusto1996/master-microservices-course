@@ -13,4 +13,6 @@ public interface AccountService {
      * @param customerDto the customer dto
      */
     void createAccount(CustomerDto customerDto);
+
+    CustomerDto fetchAccount(String mobileNumber);
 }

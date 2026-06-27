@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 import static java.lang.Boolean.FALSE;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -20,6 +21,18 @@ public class GlobalExceptionHandler {
         ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
                 webRequest.getDescription(FALSE),
                 BAD_REQUEST,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDTO, BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleResourceNotFoundExceptionException(ResourceNotFoundException exception,
+                                                                                 WebRequest webRequest) {
+        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
+                webRequest.getDescription(FALSE),
+                NOT_FOUND,
                 exception.getMessage(),
                 LocalDateTime.now()
         );
