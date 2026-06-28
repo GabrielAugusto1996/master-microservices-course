@@ -1,9 +1,9 @@
-package com.eazybank.cards.controller.api;
+package com.eazybank.loans.controller.api;
 
-import com.eazybank.cards.constants.CardContants;
-import com.eazybank.cards.dto.CardDto;
-import com.eazybank.cards.dto.ErrorResponseDto;
-import com.eazybank.cards.dto.ResponseDto;
+import com.eazybank.loans.constants.LoanContants;
+import com.eazybank.loans.dto.LoanDto;
+import com.eazybank.loans.dto.ErrorResponseDto;
+import com.eazybank.loans.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,21 +24,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(
-        name = "Cards",
-        description = "CRUD REST APIs in EazyBank to CREATE, UPDATE, FETCH and DELETE card details"
+        name = "Loans",
+        description = "CRUD REST APIs in EazyBank to CREATE, UPDATE, FETCH and DELETE loan details"
 )
-@RequestMapping(path = "/api/cards", produces = {MediaType.APPLICATION_JSON_VALUE })
-public interface CardApiController {
+@RequestMapping(path = "/api/loans", produces = {MediaType.APPLICATION_JSON_VALUE })
+public interface LoanApiController {
 
     @Operation(
-            summary = "Create Card REST API",
-            description = "REST API to create new Card inside EazyBank",
-            tags = "Cards"
+            summary = "Create Loan REST API",
+            description = "REST API to create new Loan inside EazyBank",
+            tags = "Loans"
     )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "201",
-                    description = CardContants.MESSAGE_201
+                    description = LoanContants.MESSAGE_201
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -64,20 +64,20 @@ public interface CardApiController {
     })
     @ApiResponse(
             responseCode = "201",
-            description = CardContants.MESSAGE_201
+            description = LoanContants.MESSAGE_201
     )
     @PostMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
-    ResponseEntity<ResponseDto> createCard(@Valid @RequestBody CardDto cardDto);
+    ResponseEntity<ResponseDto> createLoan(@Valid @RequestBody LoanDto loanDto);
 
     @Operation(
-            summary = "Fetch Card REST API",
-            description = "REST API to fetch an existing Card inside EazyBank",
-            tags = "Cards"
+            summary = "Fetch Loan REST API",
+            description = "REST API to fetch an existing Loan inside EazyBank",
+            tags = "Loans"
     )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Card details retrieved successfully"
+                    description = "Loan details retrieved successfully"
             ),
             @ApiResponse(
                     responseCode = "404",
@@ -95,17 +95,17 @@ public interface CardApiController {
             )
     })
     @GetMapping("/fetch")
-    ResponseEntity<CardDto> fetchCardDetails(@NotBlank @RequestParam String mobileNumber);
+    ResponseEntity<LoanDto> fetchLoanDetails(@NotBlank @RequestParam String mobileNumber);
 
     @Operation(
-            summary = "UPDATE Card REST API",
-            description = "REST API to update an existing Card inside EazyBank",
-            tags = "Cards"
+            summary = "UPDATE Loan REST API",
+            description = "REST API to update an existing Loan inside EazyBank",
+            tags = "Loans"
     )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Card details was updated successfully"
+                    description = "Loan details was updated successfully"
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -130,18 +130,18 @@ public interface CardApiController {
             )
     })
     @PutMapping(path = "{mobileNumber}", consumes = { MediaType.APPLICATION_JSON_VALUE })
-    ResponseEntity<CardDto> updateCard(@Valid @RequestBody CardDto cardDto,
-                                                           @PathVariable String mobileNumber);
+    ResponseEntity<LoanDto> updateLoan(@Valid @RequestBody LoanDto loanDto,
+                                       @PathVariable String mobileNumber);
 
     @Operation(
-            summary = "DELETE Card REST API",
-            description = "REST API to delete an existing Card inside EazyBank",
-            tags = "Cards"
+            summary = "DELETE Loan REST API",
+            description = "REST API to delete an existing Loan inside EazyBank",
+            tags = "Loans"
     )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
-                    description = "Card was deleted successfully"
+                    description = "Loan was deleted successfully"
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -166,5 +166,5 @@ public interface CardApiController {
             )
     })
     @DeleteMapping(path = "{mobileNumber}")
-    ResponseEntity<Void> deleteCard(@PathVariable String mobileNumber);
+    ResponseEntity<Void> deleteLoan(@PathVariable String mobileNumber);
 }
