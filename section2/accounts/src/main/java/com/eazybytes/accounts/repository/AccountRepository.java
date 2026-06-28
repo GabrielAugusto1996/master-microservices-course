@@ -14,6 +14,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Optional<Account> findByAccountNumber(Long accountNumber);
 
+    //NOTE: AuditAware only works if use the method save(), if you need to create a custom update, must be performed it manually
     @Modifying
     @Query("""
        UPDATE Account

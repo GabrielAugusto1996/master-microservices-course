@@ -13,8 +13,6 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 @AllArgsConstructor
 public class AccountServiceImpl implements AccountService {
@@ -31,7 +29,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         Customer customer = customerRepository.save(
-                customerDto.toNewEntity()
+                customerDto.toEntity()
         );
 
         accountRepository.save(Account.newAccount(customer));
@@ -54,15 +52,13 @@ public class AccountServiceImpl implements AccountService {
     public void updateAccountByAccountNumber(CustomerDetailDto customerDetailDto, Long accountNumber) {
         Account account = accountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "accountNumber", accountNumber.toString()));
-
+        
         accountRepository.updateAccountDetailsByAccountNumber(customerDetailDto.accountType(),
                 customerDetailDto.branchAddress(), account.getAccountNumber());
 
         Customer customer = customerRepository.findById(account.getCustomerId())
                 .orElseThrow(() -> new ResourceNotFoundException("Customer", "customerId", account.getCustomerId().toString()));
 
-        customer.setUpdatedAt(LocalDateTime.now());
-        customer.setUpdatedBy("account_microservice");
         customer.setEmail(customerDetailDto.email());
         customer.setMobileNumber(customerDetailDto.mobileNumber());
         customer.setName(customerDetailDto.name());

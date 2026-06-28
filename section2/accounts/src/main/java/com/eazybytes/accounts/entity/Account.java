@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
 import java.util.Random;
 
 @Entity
@@ -50,9 +49,6 @@ public class Account extends BaseEntity {
                 .branchAddress(AccountContants.ADDRESS)
                 .customerId(customer.getCustomerId())
                 .build();
-
-        account.setCreatedBy("account-microservice");
-        account.setCreatedAt(LocalDateTime.now());
 
         return account;
     }
