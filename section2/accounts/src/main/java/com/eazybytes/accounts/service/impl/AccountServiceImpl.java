@@ -1,5 +1,6 @@
 package com.eazybytes.accounts.service.impl;
 
+import com.eazybytes.accounts.audit.AuditAwareImpl;
 import com.eazybytes.accounts.dto.CustomerDetailDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.entity.Account;
@@ -19,6 +20,7 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
+    private final AuditAwareImpl auditAware;
 
     @Override
     public void createAccount(CustomerDto customerDto) {
@@ -52,9 +54,9 @@ public class AccountServiceImpl implements AccountService {
     public void updateAccountByAccountNumber(CustomerDetailDto customerDetailDto, Long accountNumber) {
         Account account = accountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "accountNumber", accountNumber.toString()));
-        
+
         accountRepository.updateAccountDetailsByAccountNumber(customerDetailDto.accountType(),
-                customerDetailDto.branchAddress(), account.getAccountNumber());
+                customerDetailDto.branchAddress(), auditAware.getCurrentAuditor().orElse("NO_USER"), account.getAccountNumber());
 
         Customer customer = customerRepository.findById(account.getCustomerId())
                 .orElseThrow(() -> new ResourceNotFoundException("Customer", "customerId", account.getCustomerId().toString()));

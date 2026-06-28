@@ -21,8 +21,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
        SET accountType = :accountType,
            branchAddress = :branchAddress,
            updatedAt = current_timestamp,
-           updatedBy =  'account_microservice'
+           updatedBy =  :user
        WHERE accountNumber = :accountNumber
     """)
-    Integer updateAccountDetailsByAccountNumber(String accountType, String branchAddress, Long accountNumber);
+    Integer updateAccountDetailsByAccountNumber(String accountType, String branchAddress, String user, Long accountNumber);
 }
