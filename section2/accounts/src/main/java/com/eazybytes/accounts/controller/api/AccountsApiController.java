@@ -3,8 +3,11 @@ package com.eazybytes.accounts.controller.api;
 import com.eazybytes.accounts.constants.AccountContants;
 import com.eazybytes.accounts.dto.CustomerDetailDto;
 import com.eazybytes.accounts.dto.CustomerDto;
+import com.eazybytes.accounts.dto.ErrorResponseDto;
 import com.eazybytes.accounts.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,6 +40,27 @@ public interface AccountsApiController {
             @ApiResponse(
                     responseCode = "201",
                     description = AccountContants.MESSAGE_201
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "BAD Request Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Resource Not Found",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
             )
     })
     @ApiResponse(
@@ -55,6 +79,20 @@ public interface AccountsApiController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Account details retrieved successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Resource Not Found",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
             )
     })
     @GetMapping("/fetch")
@@ -69,6 +107,27 @@ public interface AccountsApiController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Account details was updated successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "BAD Request Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Resource Not Found",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
             )
     })
     @PutMapping(path = "{accountNumber}", consumes = { MediaType.APPLICATION_JSON_VALUE })
@@ -84,6 +143,27 @@ public interface AccountsApiController {
             @ApiResponse(
                     responseCode = "204",
                     description = "Account was deleted successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "BAD Request Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Resource Not Found",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
             )
     })
     @DeleteMapping(path = "{accountNumber}")
