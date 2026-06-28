@@ -25,7 +25,7 @@ import java.util.Random;
 public class Account extends BaseEntity {
 
     @Id
-    @Column(name = "account_number")
+    @Column(name = "account_number", updatable = false)
     private Long accountNumber;
 
     @Column(name = "customer_id")

@@ -1,5 +1,6 @@
 package com.eazybytes.accounts.service.impl;
 
+import com.eazybytes.accounts.dto.CustomerDetailDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.entity.Account;
 import com.eazybytes.accounts.entity.Customer;
@@ -8,8 +9,11 @@ import com.eazybytes.accounts.exception.ResourceNotFoundException;
 import com.eazybytes.accounts.repository.AccountRepository;
 import com.eazybytes.accounts.repository.CustomerRepository;
 import com.eazybytes.accounts.service.AccountService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
@@ -43,5 +47,36 @@ public class AccountServiceImpl implements AccountService {
 
 
         return Customer.parseToDto(customer, account);
+    }
+
+    @Override
+    @Transactional
+    public void updateAccountByAccountNumber(CustomerDetailDto customerDetailDto, Long accountNumber) {
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Account", "accountNumber", accountNumber.toString()));
+
+        accountRepository.updateAccountDetailsByAccountNumber(customerDetailDto.accountType(),
+                customerDetailDto.branchAddress(), account.getAccountNumber());
+
+        Customer customer = customerRepository.findById(account.getCustomerId())
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "customerId", account.getCustomerId().toString()));
+
+        customer.setUpdatedAt(LocalDateTime.now());
+        customer.setUpdatedBy("account_microservice");
+        customer.setEmail(customerDetailDto.email());
+        customer.setMobileNumber(customerDetailDto.mobileNumber());
+        customer.setName(customerDetailDto.name());
+
+        customerRepository.save(customer);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAccountByAccountNumber(Long accountNumber) {
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Account", "accountNumber", accountNumber.toString()));
+
+        customerRepository.deleteById(account.getCustomerId());
+        accountRepository.deleteById(account.getAccountNumber());
     }
 }
