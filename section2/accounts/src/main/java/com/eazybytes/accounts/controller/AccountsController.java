@@ -5,6 +5,8 @@ import com.eazybytes.accounts.dto.CustomerDetailDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.dto.ResponseDto;
 import com.eazybytes.accounts.service.AccountService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +29,7 @@ public class AccountsController {
     private final AccountService accountService;
 
     @PostMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<ResponseDto> createAccount(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CustomerDto customerDto) {
 
         this.accountService.createAccount(customerDto);
 
@@ -38,13 +40,13 @@ public class AccountsController {
     }
 
     @GetMapping("/fetch")
-    public ResponseEntity<CustomerDto> fetchAccountDetails(@RequestParam String mobileNumber) {
+    public ResponseEntity<CustomerDto> fetchAccountDetails(@NotBlank @RequestParam String mobileNumber) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(accountService.fetchAccount(mobileNumber));
     }
 
     @PutMapping(path = "{accountNumber}", consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<CustomerDetailDto> updateAccount(@RequestBody CustomerDetailDto customerDetailDto,
+    public ResponseEntity<CustomerDetailDto> updateAccount(@Valid @RequestBody CustomerDetailDto customerDetailDto,
                                                            @PathVariable Long accountNumber) {
 
         this.accountService.updateAccountByAccountNumber(customerDetailDto, accountNumber);

@@ -16,12 +16,12 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @Modifying
     @Query("""
-       UPDATE Account 
-           SET accountType = :accountType,
-               branchAddress = :branchAddress,
-               updatedAt = current_timestamp,
-               updatedBy =  'account_microservice'
-           WHERE accountNumber = :accountNumber
+       UPDATE Account
+       SET accountType = :accountType,
+           branchAddress = :branchAddress,
+           updatedAt = current_timestamp,
+           updatedBy =  'account_microservice'
+       WHERE accountNumber = :accountNumber
     """)
     Integer updateAccountDetailsByAccountNumber(String accountType, String branchAddress, Long accountNumber);
 }

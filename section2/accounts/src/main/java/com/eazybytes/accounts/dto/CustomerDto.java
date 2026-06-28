@@ -1,10 +1,15 @@
 package com.eazybytes.accounts.dto;
 
 import com.eazybytes.accounts.entity.Customer;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
-public record CustomerDto(String name, String email, String mobileNumber, AccountDto accountDto) {
+public record CustomerDto(@NotBlank String name,
+                          @NotBlank @Email String email,
+                          @NotBlank String mobileNumber,
+                          AccountDto accountDto) {
 
     public Customer toEntity() {
         return Customer.builder()
