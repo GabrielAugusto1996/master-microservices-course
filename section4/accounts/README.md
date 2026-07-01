@@ -1,3 +1,10 @@
+# Recommendation for images:
+
+- Dockerfiles: Used almost everywhere because they work across languages and platforms.
+- Buildpacks: Common in organizations using Spring Boot, Cloud Foundry, or platforms that favor convention over configuration.
+- Google Jib: Popular among Java teams, especially those focused on Maven/Gradle and optimized build pipelines.
+
+
 # RUN IT USING DOCKER FILE
 
 NOTE: The -t (tags) reference to the tag name that will be generate for the Docker, the s4 means that we are into the section 4 for this course.

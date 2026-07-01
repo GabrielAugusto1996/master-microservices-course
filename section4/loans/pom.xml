@@ -101,7 +101,11 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<image>
-						<name>gabrielmorato139/${project.artifactId}:s4</name>
+						<builder>paketobuildpacks/builder-jammy-base</builder>
+						<name>gabrielmorato139/${project.artifactId}:${project.version}</name>
+						<env>
+							<BP_JVM_VERSION>17</BP_JVM_VERSION>
+						</env>
 					</image>
 					<excludes>
 						<exclude>

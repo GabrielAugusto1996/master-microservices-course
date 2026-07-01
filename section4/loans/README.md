@@ -11,9 +11,18 @@ It must be included the follower code into the maven-plugin:
 
 ```maven
 <image>
-    <name>${dockerUser}/${project.artifactId}:${tag}</name>
+    <builder>paketobuildpacks/builder-jammy-base</builder>
+    <name>gabrielmorato139/${project.artifactId}:${project.version}</name>
+    <env>
+        <BP_JVM_VERSION>17</BP_JVM_VERSION>
+    </env>
 </image>
 ```
+Consideration about the builders for builderpack:
+
+paketobuildpacks/builder-jammy-base ✅ Recommended for most apps
+paketobuildpacks/builder-jammy-tiny (smaller images)
+paketobuildpacks/builder-jammy-full (includes more build tools)
 
 After that you can run the following command to build the image:
 
