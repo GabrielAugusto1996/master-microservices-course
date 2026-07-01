@@ -27,12 +27,18 @@ First must be included the follower plugin into the pom.xml:
 
 Run the command to build the image:
 
+```bash
 mvn compile jib:build
+```
 
 # Validate the images
 
+```bash
 docker images
+```
 
 # Run the image:
 
+```bash
 docker run -d -p 9000:9000 gabrielmorato139/cards:0.0.1-SNAPSHOT  
+```
