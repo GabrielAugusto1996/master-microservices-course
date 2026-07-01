@@ -1,6 +1,6 @@
 package com.eazybank.cards.repository;
 
-import com.eazybank.cards.entity.Loan;
+import com.eazybank.cards.entity.Card;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
