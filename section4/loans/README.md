@@ -26,12 +26,18 @@ paketobuildpacks/builder-jammy-full (includes more build tools)
 
 After that you can run the following command to build the image:
 
+```bash
 mvn spring-boot:build-image
+```
 
 After create the image, you can check using the command:
 
+```bash
 docker images
+```
 
 Run the following command to run it:
 
+```bash
 docker run -d -p 8090:8090 gabrielmorato139/loans:s4
+```

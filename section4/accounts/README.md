@@ -9,15 +9,24 @@
 
 NOTE: The -t (tags) reference to the tag name that will be generate for the Docker, the s4 means that we are into the section 4 for this course.
 
+```bash
 docker build . -t eazybytes/accounts/s4
+```
 
 ! You can run the commands 
 
+```bash
 docker images --> LIST ALL OF THE IMAGES
+```
 
+```bash
 docker inspect <IMAGE_ID> --> CHECK THE DETAILS FOR THE DOCKER IMAGE
+```
 
+```bash
 docker run -d -p 8080:8080 eazybytes/accounts/s4 --> Start the docker using the port 8080, to expose the docker outside the docker network.
+```
+
 -d --> detached mode
 -p --> port mapping
 
