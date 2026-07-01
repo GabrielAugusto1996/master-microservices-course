@@ -41,3 +41,9 @@ Run the following command to run it:
 ```bash
 docker run -d -p 8090:8090 gabrielmorato139/loans:s4
 ```
+
+Push the image to the docker:
+
+```bash
+docker image push docker.io/${dockerImage}
+```
