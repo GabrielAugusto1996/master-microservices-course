@@ -17,4 +17,4 @@ spring:
   application:
     name: accounts
 build:
-  version: "1.0"
+  version: ${ACCOUNT_VERSION}
