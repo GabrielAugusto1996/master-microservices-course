@@ -2,13 +2,13 @@ package com.eazybytes.accounts.controller;
 
 import com.eazybytes.accounts.constants.AccountContants;
 import com.eazybytes.accounts.controller.api.AccountsApiController;
+import com.eazybytes.accounts.dto.AccountContactInfoDto;
 import com.eazybytes.accounts.dto.CustomerDetailDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.dto.ResponseDto;
 import com.eazybytes.accounts.service.AccountService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +24,12 @@ public class AccountsController implements AccountsApiController {
 
     private final String buildVersion;
 
-    public AccountsController(AccountService accountService, @Value("${build.version}") String buildVersion) {
+    private final AccountContactInfoDto accountContactInfoDto;
+
+    public AccountsController(AccountService accountService, @Value("${build.version}") String buildVersion, AccountContactInfoDto accountContactInfoDto) {
         this.accountService = accountService;
         this.buildVersion = buildVersion;
+        this.accountContactInfoDto = accountContactInfoDto;
     }
 
     @Override
@@ -66,5 +69,10 @@ public class AccountsController implements AccountsApiController {
     @Override
     public ResponseEntity<String> getBuildInfo() {
         return ResponseEntity.ok(this.buildVersion);
+    }
+
+    @Override
+    public ResponseEntity<AccountContactInfoDto> getContactInfo() {
+        return ResponseEntity.ok(this.accountContactInfoDto);
     }
 }

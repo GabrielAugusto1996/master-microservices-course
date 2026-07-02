@@ -1,6 +1,7 @@
 package com.eazybytes.accounts.controller.api;
 
 import com.eazybytes.accounts.constants.AccountContants;
+import com.eazybytes.accounts.dto.AccountContactInfoDto;
 import com.eazybytes.accounts.dto.CustomerDetailDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.dto.ErrorResponseDto;
@@ -169,7 +170,6 @@ public interface AccountsApiController {
     @DeleteMapping(path = "{accountNumber}")
     ResponseEntity<Void> deleteAccount(@PathVariable Long accountNumber);
 
-
     @Operation(
             summary = "Get Build information",
             description = "Get Build information for accounts microservice",
@@ -190,4 +190,25 @@ public interface AccountsApiController {
     })
     @GetMapping("build-info")
     ResponseEntity<String> getBuildInfo();
+
+    @Operation(
+            summary = "Get Contact information",
+            description = "Get Contact information for accounts microservice",
+            tags = "Accounts"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    })
+    @GetMapping("contact-info")
+    ResponseEntity<AccountContactInfoDto> getContactInfo();
 }

@@ -18,3 +18,12 @@ spring:
     name: accounts
 build:
   version: ${ACCOUNT_VERSION}
+
+accounts:
+  message: "Welcome to EazyBank accounts related local APIs"
+  contactDetails:
+    name: "John Doe"
+    email: "john@eazybank.com"
+  onCallSupport:
+    - (555) 555-1234
+    - (555) 555-1235
