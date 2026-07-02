@@ -1,5 +1,5 @@
 accounts:
-  message: "Welcome to DEV EazyBank accounts related local APIs"
+  message: "Welcome to UAT EazyBank accounts related local APIs"
   contactDetails:
     name: "John Doe"
     email: "john@eazybank.com"
