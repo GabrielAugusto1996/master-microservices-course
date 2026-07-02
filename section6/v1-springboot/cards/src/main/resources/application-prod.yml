@@ -1,5 +1,5 @@
 cards:
-  message: "Welcome to DEV EazyBank cards related local APIs"
+  message: "Welcome to PROD EazyBank cards related local APIs"
   contactDetails:
     name: "John Doe"
     email: "john@eazybank.com"
