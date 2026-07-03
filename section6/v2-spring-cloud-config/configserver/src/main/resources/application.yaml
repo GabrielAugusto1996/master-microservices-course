@@ -17,3 +17,5 @@ spring:
           force-pull: true # It always override the local changes after start or restart.
         # native:
           # search-locations: "classpath:/config" -> Used with the native profile
+encrypt:
+  key: "45D81EC1EF61DF9AD8D3E5BB397F9"
