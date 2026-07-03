@@ -6,6 +6,8 @@ spring:
     driverClassName: org.h2.Driver
     username: sa
     password: ''
+  config:
+    import: "optional:configserver:http://localhost:8071/"
   h2:
     console:
       enabled: true
@@ -16,5 +18,7 @@ spring:
     show-sql: true
   application:
     name: accounts
+  profiles:
+    active: "prod"
 build:
-  version: ${ACCOUNT_VERSION}
+  version: "1.0"
