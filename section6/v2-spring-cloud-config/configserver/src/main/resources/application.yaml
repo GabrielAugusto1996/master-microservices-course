@@ -6,6 +6,11 @@ spring:
   profiles:
     # active: native -> Only use this profile if you are using search-locations as local config
       active: git # To use a repo as a git to retrieve the configs
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
   cloud:
     config:
       server:
@@ -19,3 +24,9 @@ spring:
           # search-locations: "classpath:/config" -> Used with the native profile
 encrypt:
   key: "45D81EC1EF61DF9AD8D3E5BB397F9"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
