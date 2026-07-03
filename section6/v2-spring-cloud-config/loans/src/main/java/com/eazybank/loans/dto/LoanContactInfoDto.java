@@ -1,4 +1,4 @@
-package com.eazybytes.accounts.dto;
+package com.eazybank.loans.dto;
 
 
 import lombok.Getter;
@@ -7,10 +7,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Map;
 
-@ConfigurationProperties(prefix = "accounts")
+@ConfigurationProperties(prefix = "loans")
 @Getter
 @Setter
-public class AccountContactInfoDto {
+public class LoanContactInfoDto {
     private String message;
     private Map<String, String> contactDetails;
     private String[] onCallSupport;

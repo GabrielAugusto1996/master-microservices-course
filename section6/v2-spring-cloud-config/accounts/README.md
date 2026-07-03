@@ -80,3 +80,21 @@ Adding into the dependencies:
 		</dependencies>
 	</dependencyManagement>
 ```
+
+# Enable actuator:
+
+In the application.yml must be added it:
+
+```yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+```
+
+### Actuator Refresh
+
+http://localhost:8080/actuator/refresh -> POST
+
+Its used to refresh on real time the configserver configurations.
