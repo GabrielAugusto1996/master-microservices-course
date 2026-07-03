@@ -98,3 +98,37 @@ management:
 http://localhost:8080/actuator/refresh -> POST
 
 Its used to refresh on real time the configserver configurations.
+
+---
+
+# Adding Rabbit MQ:
+
+Install using this command for docker:
+
+```bash
+# latest RabbitMQ 4.x
+docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-management
+```
+
+After that include the dependency in the pom.xml:
+
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+</dependency>
+```
+
+Include it into the application.yml:
+
+```yaml
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+```
+
+Actuator call POST request for refresh using Service BUS:
+
+http://localhost:8080/actuator/busrefresh

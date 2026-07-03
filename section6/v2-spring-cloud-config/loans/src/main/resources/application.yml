@@ -20,6 +20,11 @@ spring:
     name: loans
   profiles:
     active: "prod"
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
 build:
   version: "1.0"
 
