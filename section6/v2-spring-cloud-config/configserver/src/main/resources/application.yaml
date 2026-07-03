@@ -4,9 +4,16 @@ spring:
   application:
     name: configserver
   profiles:
-    active: native
+    # active: native -> Only use this profile if you are using search-locations as local config
+      active: git # To use a repo as a git to retrieve the configs
   cloud:
     config:
       server:
-        native:
-          search-locations: "classpath:/config"
+        git:
+          uri: "https://github.com/GabrielAugusto1996/master-microservices-config-course.git"
+          default-label: "master" # The branch that you want to retrieve the details
+          timeout: 5 # Wait until maximum 5 seconds
+          clone-on-start: true # Clone the repository into the github repo when start the application
+          force-pull: true # It always override the local changes after start or restart.
+        # native:
+          # search-locations: "classpath:/config" -> Used with the native profile
