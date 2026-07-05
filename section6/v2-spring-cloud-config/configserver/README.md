@@ -22,3 +22,32 @@ encrypt:
 # Decrypt the values POST call:
 
 http://localhost:8071/decrypt
+
+# How to enabled Health Liveness and Readiness:
+
+It must be included these changes into the application.yml:
+
+```yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+```
+
+After that it will be able to test using the follower endpoints (GET):
+
+http://localhost:8071/actuator/health -> Check the health for the whole microservice
+
+http://localhost:8071/actuator/health/liveness -> Check if the liveness its ok
+
+http://localhost:8071/actuator/health/readiness -> Check if the readiness its ok
