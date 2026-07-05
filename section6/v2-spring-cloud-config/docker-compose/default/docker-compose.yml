@@ -1,13 +1,34 @@
 services:
+  rabbit:
+    image: rabbitmq:4-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
   configserver:
     image: "eazybytes/configserver/s6"
     container_name: "configserver-microservice"
     ports:
       - "8071:8071"
+    depends_on:
+      rabbit:
+        condition: service_healthy
     deploy:
       resources:
         limits:
           memory: 700m
+    healthcheck:
+      test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     networks: # Must provided the same network name to the services communicate each others
       - eazybank
   accounts:
@@ -15,6 +36,9 @@ services:
     container_name: "accounts-microservice"
     ports:
       - "8080:8080"
+    depends_on:
+      configserver:
+        condition: service_healthy
     deploy:
       resources:
         limits:
@@ -29,7 +53,10 @@ services:
     image: "eazybytes/loans/s6"
     container_name: "loans-microservice"
     ports:
-      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      configserver:
+        condition: service_healthy
     deploy:
       resources:
         limits:
@@ -44,7 +71,10 @@ services:
     image: "eazybytes/cards/s6"
     container_name: "cards-microservice"
     ports:
-      - "8080:8080"
+      - "9000:9000"
+    depends_on:
+      configserver:
+        condition: service_healthy
     deploy:
       resources:
         limits:
