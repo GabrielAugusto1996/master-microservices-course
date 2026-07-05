@@ -11,6 +11,8 @@ services:
       timeout: 5s
       retries: 10
       start_period: 5s
+    networks: # Must provided the same network name to the services communicate each others
+      - eazybank
   configserver:
     image: "eazybytes/configserver/s6"
     container_name: "configserver-microservice"
