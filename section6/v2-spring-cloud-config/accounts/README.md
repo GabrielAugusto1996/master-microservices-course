@@ -10,8 +10,12 @@
 NOTE: The -t (tags) reference to the tag name that will be generate for the Docker, the s4 means that we are into the section 4 for this course.
 
 ```bash
-docker build . -t eazybytes/accounts/s4
+docker build . -t <USER>/<IMAGE_NAME>:<TAG>
 ```
+
+For example:
+
+docker build . -t gabrielmorato139/accounts:0.0.1-SNAPSHOT
 
 ! You can run the commands 
 
