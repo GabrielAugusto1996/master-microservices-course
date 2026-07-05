@@ -1,11 +1,21 @@
-# IT MEANS THAT DOCKER HAS A DEPENDENCY FOR THIS IMAGE AS A BASE IMAGE
+# Build stage
+FROM maven:3.9.9-eclipse-temurin-17 AS builder
+
+WORKDIR /app
+
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+# Runtime stage
 FROM eclipse-temurin:17-jre
 
 # THE MAINTAINER FOR THIS IMAGE
 LABEL maintainer="gabriel.morato139@gmail.com"
 
-# COPY ALL OF THE DATA REGARDING TO THE TARGET TO THIS JAR FILE
-COPY target/*.jar accounts.jar
+WORKDIR /app
 
-# WHEN SOMEONE TRY TO GENERATE A CONTAINER FOR THIS DOCKER IMAGE, MUST EXECUTE IT
+COPY --from=builder /app/target/*.jar accounts.jar
+
 ENTRYPOINT ["java", "-jar", "accounts.jar"]
