@@ -11,82 +11,70 @@ services:
       timeout: 5s
       retries: 10
       start_period: 5s
-    networks: # Must provided the same network name to the services communicate each others
-      - eazybank
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   configserver:
-    image: "eazybytes/configserver/s6"
-    container_name: "configserver-microservice"
+    image: "eazybytes/configserver:s6"
+    container_name: configserver-ms
     ports:
       - "8071:8071"
     depends_on:
       rabbit:
         condition: service_healthy
-    deploy:
-      resources:
-        limits:
-          memory: 700m
     healthcheck:
       test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 10s
-    networks: # Must provided the same network name to the services communicate each others
-      - eazybank
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
+
   accounts:
-    image: "eazybytes/accounts/s6"
-    container_name: "accounts-microservice"
+    image: "eazybytes/accounts:s6"
+    container_name: accounts-ms
     ports:
       - "8080:8080"
     depends_on:
       configserver:
         condition: service_healthy
-    deploy:
-      resources:
-        limits:
-          memory: 700m
-    networks:
-      - eazybank
     environment:
-      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
-      SPRING_PROFILES_ACTIVE: "default"
       SPRING_APPLICATION_NAME: "accounts"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
   loans:
-    image: "eazybytes/loans/s6"
-    container_name: "loans-microservice"
+    image: "eazybytes/loans:s6"
+    container_name: loans-ms
     ports:
-      - "8081:8081"
+      - "8090:8090"
     depends_on:
       configserver:
         condition: service_healthy
-    deploy:
-      resources:
-        limits:
-          memory: 700m
-    networks: # Must provided the same network name to the services communicate each others
-      - eazybank
     environment:
-      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
-      SPRING_PROFILES_ACTIVE: "default"
       SPRING_APPLICATION_NAME: "loans"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
   cards:
-    image: "eazybytes/cards/s6"
-    container_name: "cards-microservice"
+    image: "eazybytes/cards:s6"
+    container_name: cards-ms
     ports:
       - "9000:9000"
     depends_on:
       configserver:
         condition: service_healthy
-    deploy:
-      resources:
-        limits:
-          memory: 700m
-    networks:
-      - eazybank
     environment:
-      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
-      SPRING_PROFILES_ACTIVE: "default"
       SPRING_APPLICATION_NAME: "cards"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
 networks:
   eazybank:
     driver: "bridge"
