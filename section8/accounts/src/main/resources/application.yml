@@ -48,3 +48,5 @@ info:
     name: "accounts"
     description: "Eazy Bank Accounts Application"
     version: "1.0.0"
+    swagger-url: http://localhost:${server.port}/swagger-ui.html
+    api-docs-url: http://localhost:${server.port}/api-docs
