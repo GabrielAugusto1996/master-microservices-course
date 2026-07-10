@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -48,5 +49,8 @@ public interface CustomerApiController {
             )
     })
     @GetMapping("/fetch")
-    ResponseEntity<CustomerDetailsDto> fetchCustomerDetails(@NotBlank @RequestParam String mobileNumber);
+    ResponseEntity<CustomerDetailsDto> fetchCustomerDetails(
+            @NotBlank @RequestParam String mobileNumber,
+            @RequestHeader("eazybank-correlation-id") String correlationId
+    );
 }
