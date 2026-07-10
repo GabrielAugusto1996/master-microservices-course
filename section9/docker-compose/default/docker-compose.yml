@@ -60,7 +60,7 @@ services:
       retries: 10
 
   configserver:
-    image: "gabrielmorato139/configserver:s8"
+    image: "gabrielmorato139/configserver:s9"
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -75,7 +75,7 @@ services:
       service: microservice-base-config
 
   eurekaserver:
-    image: "gabrielmorato139/eurekaserver:s8"
+    image: "gabrielmorato139/eurekaserver:s9"
     container_name: eurekaserver-ms
     ports:
       - "8070:8070"
@@ -95,7 +95,7 @@ services:
       SPRING_APPLICATION_NAME: "eurekaserver"
 
   accounts:
-    image: "gabrielmorato139/accounts:s8"
+    image: "gabrielmorato139/accounts:s9"
     container_name: accounts-ms
     ports:
       - "8080:8080"
@@ -116,7 +116,7 @@ services:
       service: microservice-eureka-config
 
   loans:
-    image: "gabrielmorato139/loans:s8"
+    image: "gabrielmorato139/loans:s9"
     container_name: loans-ms
     ports:
       - "8090:8090"
@@ -137,7 +137,7 @@ services:
       service: microservice-eureka-config
 
   cards:
-    image: "gabrielmorato139/cards:s8"
+    image: "gabrielmorato139/cards:s9"
     container_name: cards-ms
     ports:
       - "9000:9000"
@@ -153,6 +153,24 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://cardsdb:5432/cardsdb
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+
+  gatewayserver:
+    image: "gabrielmorato139/gatewayserver:s9"
+    container_name: gatewayserver-ms
+    ports:
+      - "8072:8072"
+    depends_on:
+      cards:
+        condition: service_healthy
+      accounts:
+        condition: service_healthy
+      loans:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "gatewayserver"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
