@@ -10,6 +10,7 @@ spring:
           discovery:
             locator:
               enabled: true
+              lowerCaseServiceId: true # Per default this its false, so it will keep something like ACCOUNTS, instead of accounts
 build:
   version: "1.0"
 
