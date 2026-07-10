@@ -28,7 +28,7 @@ docker inspect <IMAGE_ID> --> CHECK THE DETAILS FOR THE DOCKER IMAGE
 ```
 
 ```bash
-docker run -d -p 8080:8080 eazybytes/accounts/s4 --> Start the docker using the port 8080, to expose the docker outside the docker network.
+docker run -d -p 8080:8080 gabrielmorato139/accounts/s4 --> Start the docker using the port 8080, to expose the docker outside the docker network.
 ```
 
 -d --> detached mode
