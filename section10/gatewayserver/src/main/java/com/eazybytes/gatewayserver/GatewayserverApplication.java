@@ -24,6 +24,7 @@ public class GatewayserverApplication {
 								.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
 								.circuitBreaker(config -> {
 									config.setName("accountsCircuitBreaker");
+									config.setFallbackUri("/contactSupport");
 								}))
 						.uri("lb://ACCOUNTS"))
 				.route(p -> p
