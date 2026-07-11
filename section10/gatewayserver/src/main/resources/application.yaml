@@ -1,0 +1,39 @@
+spring:
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+  application:
+    name: gatewayserver
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false # Can disable it only to show your own microservice that was defined into the GatewayserverApplication.java
+              lowerCaseServiceId: true # Per default this its false, so it will keep something like ACCOUNTS, instead of accounts
+build:
+  version: "1.0"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      access: unrestricted
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: "gatewayserver"
+    description: "Eazy Bank Gateway Server Application"
+    version: "1.0.0"
+
+logging:
+  level:
+    com:
+      eazybytes:
+        gatewayserver: DEBUG
