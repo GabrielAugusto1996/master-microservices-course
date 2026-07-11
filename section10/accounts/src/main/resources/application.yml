@@ -15,6 +15,10 @@ spring:
     sql:
       init:
         mode: always
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
   application:
     name: accounts
   profiles:
@@ -65,3 +69,24 @@ logging:
     com:
       eazybytes:
         gatewayserver: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        # Minimum number of calls required before calculating the failure rate.
+        # Until this number is reached, the circuit will not OPEN regardless
+        # of how many failures occur.
+        minimumNumberOfCalls: 10
+
+        # Number of recent calls used to calculate the failure rate.
+        slidingWindowSize: 10
+
+        # Failure percentage required to OPEN the circuit.
+        failureRateThreshold: 50
+
+        # Time the circuit stays OPEN before moving to HALF_OPEN.
+        waitDurationInOpenState: 10s
+
+        # Number of trial calls allowed in HALF_OPEN.
+        permittedNumberOfCallsInHalfOpenState: 2
