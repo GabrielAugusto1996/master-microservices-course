@@ -1,6 +1,7 @@
-package com.eazybytes.accounts.service.client;
+package com.eazybytes.accounts.service.client.fallback;
 
 import com.eazybytes.accounts.dto.CardDto;
+import com.eazybytes.accounts.service.client.CardsFeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
