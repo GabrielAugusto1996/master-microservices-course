@@ -171,3 +171,9 @@ Running the docker file:
 ```bash
 docker compose -f postgres.yml up -d
 ```
+
+# How to run redis:
+
+```bash
+docker run -p 6379:6379 --name eazyredis -d redis
+```
