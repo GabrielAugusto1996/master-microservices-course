@@ -12,7 +12,7 @@ spring:
               enabled: false # Can disable it only to show your own microservice that was defined into the GatewayserverApplication.java
               lowerCaseServiceId: true # Per default this its false, so it will keep something like ACCOUNTS, instead of accounts
       httpclient:
-        connect-timout: 1000 # Time to get a connection with the Application
+        connect-timeout: 1000 # Time to get a connection with the Application
         response-timeout: 5s # Time that the gateway will wait until receive the response
 build:
   version: "1.0"
@@ -42,6 +42,10 @@ logging:
         gatewayserver: DEBUG
 
 resilience4j:
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 4s
   circuitbreaker:
     configs:
       default:
@@ -61,3 +65,9 @@ resilience4j:
 
         # Number of trial calls allowed in HALF_OPEN.
         permittedNumberOfCallsInHalfOpenState: 2
+
+  instances:
+    default:
+      baseConfig: default
+    accountsCircuitBreaker:
+      baseConfig: default

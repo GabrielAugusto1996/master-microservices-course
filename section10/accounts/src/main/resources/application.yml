@@ -108,3 +108,11 @@ resilience4j:
         #  2 retry: 100 * 2 = 200
         #  3 retry: 200 * 2 = 400
         exponentialBackoffMultiplier: 2
+
+        # It should ignore these exceptions at the moment of the retry
+        ignoreExceptions:
+          - java.lang.NullPointerException
+
+        # Only retries for these exceptions, if you enable it, its not necessary use more: "ignoreExceptions" property.
+        retryExceptions:
+          - java.util.concurrent.TimeoutException
