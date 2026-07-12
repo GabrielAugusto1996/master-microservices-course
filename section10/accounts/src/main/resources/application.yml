@@ -90,3 +90,21 @@ resilience4j:
 
         # Number of trial calls allowed in HALF_OPEN.
         permittedNumberOfCallsInHalfOpenState: 2
+  retry:
+    configs:
+      default:
+        # The maximum number of the retries, with this configuration the method should be called 4 times.
+        # 1 time for the original call + 3 times for the retry
+        maxAttempts: 3
+
+        # The time that should be waiting to execute the next retry
+        waitDuration: 100
+
+        # This should be enabled as true to be able to execute the exponential backoff pattern.
+        enableExponentialBackoff: true
+
+        # This should be used as a multiplier for the next retries calculation, for example:
+        #  1 retry: 100 (Using the waitDuration to calculate it)
+        #  2 retry: 100 * 2 = 200
+        #  3 retry: 200 * 2 = 400
+        exponentialBackoffMultiplier: 2

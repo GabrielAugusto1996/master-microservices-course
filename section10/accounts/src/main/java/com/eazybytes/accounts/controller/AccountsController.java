@@ -7,8 +7,11 @@ import com.eazybytes.accounts.dto.CustomerDetailDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.dto.ResponseDto;
 import com.eazybytes.accounts.service.AccountService;
+import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,8 @@ public class AccountsController implements AccountsApiController {
     private final String buildVersion;
 
     private final AccountContactInfoDto accountContactInfoDto;
+
+    private static final Logger logger = LoggerFactory.getLogger(AccountsController.class);
 
     public AccountsController(AccountService accountService, @Value("${build.version}") String buildVersion, AccountContactInfoDto accountContactInfoDto) {
         this.accountService = accountService;
@@ -67,12 +72,19 @@ public class AccountsController implements AccountsApiController {
     }
 
     @Override
-    public ResponseEntity<String> getBuildInfo() {
-        return ResponseEntity.ok(this.buildVersion);
+    public ResponseEntity<AccountContactInfoDto> getContactInfo() {
+        return ResponseEntity.ok(this.accountContactInfoDto);
     }
 
     @Override
-    public ResponseEntity<AccountContactInfoDto> getContactInfo() {
-        return ResponseEntity.ok(this.accountContactInfoDto);
+    @Retry(name = "getBuildInfo", fallbackMethod = "getBuildInfoFallback")
+    public ResponseEntity<String> getBuildInfo() {
+        logger.debug("getBuildInfo() method Invoked.");
+        return ResponseEntity.ok(this.buildVersion);
+    }
+
+    public ResponseEntity<String> getBuildInfoFallback(Throwable throwable) {
+        logger.debug("getBuildInfoFallback() method Invoked.");
+        return ResponseEntity.ok("0.9");
     }
 }
