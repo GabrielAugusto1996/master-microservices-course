@@ -116,3 +116,20 @@ resilience4j:
         # Only retries for these exceptions, if you enable it, its not necessary use more: "ignoreExceptions" property.
         retryExceptions:
           - java.util.concurrent.TimeoutException
+
+  ratelimiter:
+    configs:
+      default:
+        # Maximum time a caller will wait to acquire a permission.
+        # If no permission becomes available within this duration,
+        # a RequestNotPermitted exception is thrown.
+        timeoutDuration: 1000ms
+
+        # Interval after which the available permissions are refreshed.
+        # At the beginning of each period, the number of available
+        # permissions is reset to 'limitForPeriod'.
+        limitRefreshPeriod: 5000ms
+
+        # Maximum number of calls allowed during each refresh period.
+        # In this example, only one call is permitted every 5 seconds.
+        limitForPeriod: 1

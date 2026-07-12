@@ -7,6 +7,7 @@ import com.eazybytes.accounts.dto.CustomerDetailDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.dto.ResponseDto;
 import com.eazybytes.accounts.service.AccountService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -71,9 +72,20 @@ public class AccountsController implements AccountsApiController {
         return ResponseEntity.noContent().build();
     }
 
+    // It can be defined by methods, but the best practice its configuration it into the Gateway, since you can control by users
+    @RateLimiter(name = "getContactInfo", fallbackMethod = "getContactInfoFallBack")
     @Override
     public ResponseEntity<AccountContactInfoDto> getContactInfo() {
         return ResponseEntity.ok(this.accountContactInfoDto);
+    }
+
+    public ResponseEntity<AccountContactInfoDto> getContactInfoFallBack(Throwable ex) {
+        AccountContactInfoDto accountContactInfoDto1 = new AccountContactInfoDto();
+
+        accountContactInfoDto1.setMessage("Maximum call was archived, please try again in 5 seconds.");
+
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(accountContactInfoDto1);
     }
 
     @Override
