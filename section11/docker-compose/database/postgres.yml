@@ -1,0 +1,44 @@
+services:
+  accountsdb:
+    image: postgres:17
+    container_name: accountsdb
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: accountsdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - accounts_data:/var/lib/postgresql/data
+
+  loansdb:
+    image: postgres:17
+    container_name: loansdb
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: loansdb
+    ports:
+      - "5433:5432"
+    volumes:
+      - loans_data:/var/lib/postgresql/data
+
+  cardsdb:
+    image: postgres:17
+    container_name: cardsdb
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: cardsdb
+    ports:
+      - "5434:5432"
+    volumes:
+      - cards_data:/var/lib/postgresql/data
+
+volumes:
+  accounts_data:
+  loans_data:
+  cards_data:
