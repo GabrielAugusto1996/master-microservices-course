@@ -19,7 +19,7 @@ spring:
               lowerCaseServiceId: true # Per default this its false, so it will keep something like ACCOUNTS, instead of accounts
       httpclient:
         connect-timeout: 1000 # Time to get a connection with the Application
-        response-timeout: 5s # Time that the gateway will wait until receive the response
+        response-timeout: 10s # Time that the gateway will wait until receive the response
 build:
   version: "1.0"
 
