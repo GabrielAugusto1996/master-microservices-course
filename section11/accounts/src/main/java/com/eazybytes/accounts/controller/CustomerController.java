@@ -20,7 +20,10 @@ public class CustomerController implements CustomerApiController {
     @Override
     public ResponseEntity<CustomerDetailsDto> fetchCustomerDetails(String mobileNumber, String correlationId) {
 
-        logger.debug("eazyBank-correlation-id found: {}", correlationId);
-        return ResponseEntity.ok(this.customerService.fetchCustomerDetails(mobileNumber));
+        logger.debug("fetchCustomerDetails method start");
+        CustomerDetailsDto customerDetailsDto = this.customerService.fetchCustomerDetails(mobileNumber);
+        logger.debug("fetchCustomerDetails method end");
+
+        return ResponseEntity.ok(customerDetailsDto);
     }
 }
