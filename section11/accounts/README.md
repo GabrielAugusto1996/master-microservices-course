@@ -177,3 +177,8 @@ docker compose -f postgres.yml up -d
 ```bash
 docker run -p 6379:6379 --name eazyredis -d redis
 ```
+
+Using hookdeck to test grafana alerts:
+
+https://console.hookdeck.com/
+
