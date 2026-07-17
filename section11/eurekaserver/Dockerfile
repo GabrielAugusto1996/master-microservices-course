@@ -15,4 +15,9 @@ WORKDIR /app
 
 COPY --from=builder /app/target/*.jar eurekaserver.jar
 
-ENTRYPOINT ["java", "-jar", "eurekaserver.jar"]
+RUN mkdir -p /app/libs && \
+    curl -L \
+    https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.22.0/opentelemetry-javaagent.jar \
+    -o /app/libs/opentelemetry-javaagent.jar
+
+ENTRYPOINT ["java", "-javaagent:/app/libs/opentelemetry-javaagent.jar", "-jar", "eurekaserver.jar"]

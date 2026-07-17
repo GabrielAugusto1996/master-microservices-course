@@ -11,11 +11,13 @@ RUN mvn clean package -DskipTests
 # Runtime stage
 FROM eclipse-temurin:17-jre
 
-# THE MAINTAINER FOR THIS IMAGE
-LABEL maintainer="gabriel.morato139@gmail.com"
-
 WORKDIR /app
 
 COPY --from=builder /app/target/*.jar accounts.jar
 
-ENTRYPOINT ["java", "-jar", "accounts.jar"]
+RUN mkdir -p /app/libs && \
+    curl -L \
+    https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.22.0/opentelemetry-javaagent.jar \
+    -o /app/libs/opentelemetry-javaagent.jar
+
+ENTRYPOINT ["java", "-javaagent:/app/libs/opentelemetry-javaagent.jar", "-jar", "accounts.jar"]
