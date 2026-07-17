@@ -15,6 +15,7 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4318
       OTEL_METRICS_EXPORTER: none
       OTEL_LOGS_EXPORTER: none
+      OTEL_INSTRUMENTATION_LOGBACK_MDC_ENABLED: "true"
 
   microservice-configserver-config:
     extends:
