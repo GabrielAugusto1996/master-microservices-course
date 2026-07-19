@@ -20,6 +20,11 @@ spring:
       httpclient:
         connect-timeout: 1000 # Time to get a connection with the Application
         response-timeout: 10s # Time that the gateway will wait until receive the response
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwt-set-uri: "http://localhost:7080/realms/master/protocol/openid-connect/certs"
 build:
   version: "1.0"
 

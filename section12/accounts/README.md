@@ -182,3 +182,11 @@ Using hookdeck to test grafana alerts:
 
 https://console.hookdeck.com/
 
+# Start KeyCloak using Docker:
+
+```bash
+docker run -d --name keycloak -p 7080:8080 -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:latest start-dev
+```
+
+Open it using: http://localhost:7080/admin/
+
