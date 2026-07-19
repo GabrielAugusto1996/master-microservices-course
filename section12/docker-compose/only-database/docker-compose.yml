@@ -7,10 +7,17 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
       POSTGRES_DB: accountsdb
+    networks:
+      - eazybank
     ports:
       - "5432:5432"
     volumes:
       - accounts_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U root -d accountsdb" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   loansdb:
     image: postgres:17
@@ -20,10 +27,17 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
       POSTGRES_DB: loansdb
+    networks:
+      - eazybank
     ports:
       - "5433:5432"
     volumes:
       - loans_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U root -d loansdb" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   cardsdb:
     image: postgres:17
@@ -33,10 +47,21 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
       POSTGRES_DB: cardsdb
+    networks:
+      - eazybank
     ports:
       - "5434:5432"
     volumes:
       - cards_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U root -d cardsdb" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+networks:
+  eazybank:
+    driver: "bridge"
 
 volumes:
   accounts_data:
