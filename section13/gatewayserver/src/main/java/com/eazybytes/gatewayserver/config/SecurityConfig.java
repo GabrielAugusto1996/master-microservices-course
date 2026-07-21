@@ -21,7 +21,7 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity) {
         serverHttpSecurity.authorizeExchange(exchanges -> exchanges.pathMatchers(HttpMethod.GET).permitAll()
-                        .pathMatchers("/eazybank/accounts/**").hasRole("ACCOUNTS")
+                        .pathMatchers("/eazybank/accounts/**").permitAll()
                         .pathMatchers("/eazybank/cards/**").hasRole("CARDS")
                         .pathMatchers("/eazybank/loans/**").hasRole("LOANS"))
                 .oauth2ResourceServer(oAuth2ResourceServerSpec -> oAuth2ResourceServerSpec
