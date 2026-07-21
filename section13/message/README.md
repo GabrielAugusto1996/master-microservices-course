@@ -190,3 +190,107 @@ docker run -d --name keycloak -p 7080:8080 -e KC_BOOTSTRAP_ADMIN_USERNAME=admin 
 
 Open it using: http://localhost:7080/admin/
 
+# How to configure the Spring Boot Function:
+
+```xml
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-function-context</artifactId>
+		</dependency>
+
+		<!--
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-function-web</artifactId>
+		</dependency> Uncomment it if you want to use Spring Cloud Function as REST API-->
+```
+
+So include it and your configuration:
+
+```java
+package com.eazybytes.message.functions;
+
+import com.eazybytes.message.dto.AccountMessageDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.function.Function;
+
+/**
+ * The type Message functions.
+ */
+@Configuration
+public class MessageFunctions {
+
+    private static final Logger logger = LoggerFactory.getLogger(MessageFunctions.class);
+
+    /**
+     * Email function.
+     *
+     * @return the function
+     */
+    @Bean
+    public Function<AccountMessageDto, AccountMessageDto> email() {
+        return  accountMessageDto -> {
+            logger.info("Sending email for accounting to the email: {}", accountMessageDto.email());
+
+            return accountMessageDto;
+        };
+    }
+
+    /**
+     * Sms function.
+     *
+     * @return the function
+     */
+    @Bean
+    public Function<AccountMessageDto, Long> sms() {
+        return  accountMessageDto -> {
+            logger.info("Sending sms for accounting to the mobile number: {}", accountMessageDto.mobileNumber());
+
+            return accountMessageDto.accountNumber();
+        };
+    }
+}
+```
+
+# Spring Cloud Stream
+
+Add the folowing dependencies:
+
+```xml
+<dependencies>
+		<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-amqp</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.amqp</groupId>
+		<artifactId>spring-rabbit-stream</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.cloud</groupId>
+		<artifactId>spring-cloud-stream</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.cloud</groupId>
+		<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-test</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.cloud</groupId>
+		<artifactId>spring-cloud-stream-test-binder</artifactId>
+		<scope>test</scope>
+	</dependency>
+	</dependencies>
+```

@@ -1,6 +1,7 @@
 package com.eazybytes.accounts.service.impl;
 
 import com.eazybytes.accounts.audit.AuditAwareImpl;
+import com.eazybytes.accounts.dto.AccountMessageDto;
 import com.eazybytes.accounts.dto.CustomerDetailDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.entity.Account;
@@ -12,15 +13,21 @@ import com.eazybytes.accounts.repository.CustomerRepository;
 import com.eazybytes.accounts.service.AccountService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
+    private static final Logger log = LoggerFactory.getLogger(AccountServiceImpl.class);
+
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
     private final AuditAwareImpl auditAware;
+    private final StreamBridge streamBridge;
 
     @Override
     public void createAccount(CustomerDto customerDto) {
@@ -34,7 +41,22 @@ public class AccountServiceImpl implements AccountService {
                 customerDto.toEntity()
         );
 
-        accountRepository.save(Account.newAccount(customer));
+        Account account = accountRepository.save(Account.newAccount(customer));
+
+        sendCommunication(account, customer);
+    }
+
+    private void sendCommunication(Account account, Customer customer) {
+        var accountMessageDto = new AccountMessageDto(
+          account.getAccountNumber(),
+          customer.getName(),
+          customer.getEmail(),
+          customer.getMobileNumber()
+        );
+
+        log.info("Sending Communication request for the details: {}", accountMessageDto);
+        var result = streamBridge.send("sendCommunication-out-0", accountMessageDto);
+        log.info("Is the communication request successfully processed? {}", result);
     }
 
     @Override
