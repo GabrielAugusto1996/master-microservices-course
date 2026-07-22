@@ -1,0 +1,156 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/accountsdb
+    username: root
+    password: root
+    driver-class-name: org.postgresql.Driver
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    sql:
+      init:
+        mode: always
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+    function:
+      definition: updateCommunication
+    stream:
+      bindings:
+        sendCommunication-out-0:
+          destination: eazybank.send-communication-started
+        updateCommunication-in-0:
+          destination: eazybank.send-communication-processed
+          group: eazybank-accounts-send-communication-processed-0
+  application:
+    name: accounts
+  profiles:
+    active: "prod"
+build:
+  version: "1.0"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      access: unrestricted
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  metrics: # To be able to mentioned to the micrometer about that this metrics its for this application
+    tags:
+      application: ${spring.application.name}
+
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+info:
+  app:
+    name: "accounts"
+    description: "Eazy Bank Accounts Application"
+    version: "1.0.0"
+    swagger-url: http://localhost:${server.port}/swagger-ui.html
+    api-docs-url: http://localhost:${server.port}/api-docs
+
+logging:
+  level:
+    com:
+      eazybytes:
+        gatewayserver: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]" #%5p mentions the log level, like DEBUG, WARN, etc
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        # Minimum number of calls required before calculating the failure rate.
+        # Until this number is reached, the circuit will not OPEN regardless
+        # of how many failures occur.
+        minimumNumberOfCalls: 10
+
+        # Number of recent calls used to calculate the failure rate.
+        slidingWindowSize: 10
+
+        # Failure percentage required to OPEN the circuit.
+        failureRateThreshold: 50
+
+        # Time the circuit stays OPEN before moving to HALF_OPEN.
+        waitDurationInOpenState: 10s
+
+        # Number of trial calls allowed in HALF_OPEN.
+        permittedNumberOfCallsInHalfOpenState: 2
+  retry:
+    configs:
+      default:
+        # The maximum number of the retries, with this configuration the method should be called 4 times.
+        # 1 time for the original call + 3 times for the retry
+        maxAttempts: 3
+
+        # The time that should be waiting to execute the next retry
+        waitDuration: 100
+
+        # This should be enabled as true to be able to execute the exponential backoff pattern.
+        enableExponentialBackoff: true
+
+        # This should be used as a multiplier for the next retries calculation, for example:
+        #  1 retry: 100 (Using the waitDuration to calculate it)
+        #  2 retry: 100 * 2 = 200
+        #  3 retry: 200 * 2 = 400
+        exponentialBackoffMultiplier: 2
+
+        # It should ignore these exceptions at the moment of the retry
+        ignoreExceptions:
+          - java.lang.NullPointerException
+
+        # Only retries for these exceptions, if you enable it, its not necessary use more: "ignoreExceptions" property.
+        retryExceptions:
+          - java.util.concurrent.TimeoutException
+
+  ratelimiter:
+    configs:
+      default:
+        # Maximum time a caller will wait to acquire a permission.
+        # If no permission becomes available within this duration,
+        # a RequestNotPermitted exception is thrown.
+        timeoutDuration: 1000ms
+
+        # Interval after which the available permissions are refreshed.
+        # At the beginning of each period, the number of available
+        # permissions is reset to 'limitForPeriod'.
+        limitRefreshPeriod: 5000ms
+
+        # Maximum number of calls allowed during each refresh period.
+        # In this example, only one call is permitted every 5 seconds.
+        limitForPeriod: 1
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    connection-timeout: 10s
