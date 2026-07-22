@@ -28,6 +28,10 @@ spring:
         updateCommunication-in-0:
           destination: eazybank.send-communication-processed
           group: eazybank-accounts-send-communication-processed-0
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
   application:
     name: accounts
   profiles:
@@ -147,10 +151,3 @@ resilience4j:
         # Maximum number of calls allowed during each refresh period.
         # In this example, only one call is permitted every 5 seconds.
         limitForPeriod: 1
-
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-    connection-timeout: 10s

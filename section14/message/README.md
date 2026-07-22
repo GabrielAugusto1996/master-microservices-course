@@ -300,3 +300,7 @@ Add the folowing dependencies:
 ```bash
 docker run -p 9092:9092 apache/kafka:4.3.1
 ```
+
+# Plugin to be installed into Intellij to best overwiew for Kafka:
+
+Kafkalytic
