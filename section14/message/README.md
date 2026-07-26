@@ -304,3 +304,31 @@ docker run -p 9092:9092 apache/kafka:4.3.1
 # Plugin to be installed into Intellij to best overwiew for Kafka:
 
 Kafkalytic
+
+# Kubernets DashBoard UI
+
+https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
+
+
+Helm -> Package managment for Kubernets
+
+After install Helm using this followed command:
+
+```bash
+helm repo add kubernetes-dashboard https://kubernetes-retired.github.io/dashboard/
+```
+
+After that should be used this command:
+
+```bash
+helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
+```
+
+After that run it to be able to check the Kubernets admin:
+
+```bash
+kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
+```
+
+After that it must be created a sample user: https://github.com/kubernetes-retired/dashboard/blob/master/docs/user/access-control/creating-sample-user.md
+
