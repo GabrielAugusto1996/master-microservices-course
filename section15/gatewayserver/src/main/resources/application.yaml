@@ -1,0 +1,89 @@
+spring:
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+  application:
+    name: gatewayserver
+  data:
+    redis:
+      connect-timeout: 2s
+      host: localhost
+      port: 6379
+      timeout: 1s
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false # Can disable it only to show your own microservice that was defined into the GatewayserverApplication.java
+              lowerCaseServiceId: true # Per default this its false, so it will keep something like ACCOUNTS, instead of accounts
+      httpclient:
+        connect-timeout: 1000 # Time to get a connection with the Application
+        response-timeout: 10s # Time that the gateway will wait until receive the response
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:7080/realms/master/protocol/openid-connect/certs"
+build:
+  version: "1.0"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      access: unrestricted
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+info:
+  app:
+    name: "gatewayserver"
+    description: "Eazy Bank Gateway Server Application"
+    version: "1.0.0"
+
+logging:
+  level:
+    com:
+      eazybytes:
+        gatewayserver: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]" #%5p mentions the log level, like DEBUG, WARN, etc
+
+resilience4j:
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 4s
+  circuitbreaker:
+    configs:
+      default:
+        # Minimum number of calls required before calculating the failure rate.
+        # Until this number is reached, the circuit will not OPEN regardless
+        # of how many failures occur.
+        minimumNumberOfCalls: 10
+
+        # Number of recent calls used to calculate the failure rate.
+        slidingWindowSize: 10
+
+        # Failure percentage required to OPEN the circuit.
+        failureRateThreshold: 50
+
+        # Time the circuit stays OPEN before moving to HALF_OPEN.
+        waitDurationInOpenState: 10s
+
+        # Number of trial calls allowed in HALF_OPEN.
+        permittedNumberOfCallsInHalfOpenState: 2
+
+  instances:
+    default:
+      baseConfig: default
+    accountsCircuitBreaker:
+      baseConfig: default
