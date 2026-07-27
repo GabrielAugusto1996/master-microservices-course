@@ -332,3 +332,7 @@ kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy
 
 After that it must be created a sample user: https://github.com/kubernetes-retired/dashboard/blob/master/docs/user/access-control/creating-sample-user.md
 
+
+# LENS
+
+Also it's a good approach to use LENS as a tool to check the Kubernetes as a UI approach.
