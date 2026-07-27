@@ -53,7 +53,7 @@ metadata:
 spec:
   selector:
     app: cards
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - protocol: TCP
       port: 9000
