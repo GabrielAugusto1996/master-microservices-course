@@ -1,4 +1,4 @@
-e{{- define "common.configmap" -}}
+{{- define "common.configmap" -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
