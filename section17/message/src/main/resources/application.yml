@@ -1,0 +1,20 @@
+server:
+  port: 9010
+
+spring:
+  application:
+    name: "message"
+  cloud:
+    function:
+      definition: email|sms
+    stream:
+      bindings:
+        emailsms-in-0:
+          destination: eazybank.send-communication-started
+          group: eazybank-${spring.application.name}send-communication-started
+        emailsms-out-0:
+          destination: eazybank.send-communication-processed
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092

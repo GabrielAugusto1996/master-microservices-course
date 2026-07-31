@@ -1,0 +1,62 @@
+server:
+  port: 8090
+spring:
+  cloud:
+    kubernetes:
+      discovery:
+        all-namespaces: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  application:
+    name: loans
+  profiles:
+    active: "prod"
+build:
+  version: "1.0"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      access: unrestricted
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+info:
+  app:
+    name: "loans"
+    description: "Eazy Bank Loans Application"
+    version: "1.0.0"
+
+logging:
+  level:
+    com:
+      eazybytes:
+        gatewayserver: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]" #%5p mentions the log level, like DEBUG, WARN, etc
