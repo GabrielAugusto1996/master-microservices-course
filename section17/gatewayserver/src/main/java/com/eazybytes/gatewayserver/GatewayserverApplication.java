@@ -33,7 +33,7 @@ public class GatewayserverApplication {
                                     config.setName("accountsCircuitBreaker");
                                     config.setFallbackUri("/contactSupport");
                                 }))
-                        .uri("lb://ACCOUNTS"))
+                        .uri("http://accounts:8080"))
                 .route(p -> p
                         .path("/eazybank/loans/**")
                         .filters(f -> f.rewritePath("/eazybank/loans/(?<segment>.*)", "/${segment}")
@@ -54,7 +54,7 @@ public class GatewayserverApplication {
                                 .circuitBreaker(config -> {
                                     config.setName("loansCircuitBreaker");
                                 }))
-                        .uri("lb://LOANS"))
+                        .uri("http://loans:8090"))
                 .route(p -> p
                         .path("/eazybank/cards/**")
                         .filters(f -> f.rewritePath("/eazybank/cards/(?<segment>.*)", "/${segment}")
@@ -62,7 +62,7 @@ public class GatewayserverApplication {
                                 .requestRateLimiter(config -> config
                                         .setRateLimiter(redisRateLimiter())
                                         .setKeyResolver(userKeyResolver())))
-                        .uri("lb://CARDS")).build();
+                        .uri("http://cards:9000")).build();
 
 
     }
